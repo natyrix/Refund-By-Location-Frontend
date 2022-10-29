@@ -1,24 +1,17 @@
 import logo from './logo.svg';
+import { EthProvider } from "./contexts/EthContext";
 import './App.css';
+import Page from './components/Page';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link "
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <EthProvider>
+      <div className="App">
+        <div className="main"> 
+          <Page/>
+        </div>
+      </div>
+    </EthProvider>
   );
 }
 
