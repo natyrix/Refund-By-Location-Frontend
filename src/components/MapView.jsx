@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 import ReactMapGL,{Marker, Source, Layer, ScaleControl} from 'react-map-gl'
 import * as turf from "@turf/turf";
+import { useEffect } from 'react';
 
-export default function MapView({selectedContract}) {
+export default function MapView({selectedContract,locations}) {
+
     function calc_coordinates(coord, index){
         let val = [String(coord).slice(0,index),".",String(coord).slice(index)]
         return val.join('')
@@ -13,6 +15,8 @@ export default function MapView({selectedContract}) {
     let options = { steps: 50, units: "meters", properties: { foo: "bar" } };
     let circle = turf.circle(center, selectedContract.radius, options);
     let line = turf.lineString(...circle.geometry.coordinates);
+
+    
 
 
 
@@ -34,9 +38,15 @@ export default function MapView({selectedContract}) {
           mapboxAccessToken={process.env.REACT_APP_MAP_ACCESS_TOKEN}
           mapStyle="mapbox://styles/mapbox/streets-v9"
         >
-            <Marker latitude={calc_coordinates(selectedContract.coord_lat,selectedContract.lat_offset)} longitude={calc_coordinates(selectedContract.coord_long,selectedContract.lng_offset)}>
-                <h5>SKAE</h5>
+            <Marker color='blue' latitude={calc_coordinates(selectedContract.coord_lat,selectedContract.lat_offset)} longitude={calc_coordinates(selectedContract.coord_long,selectedContract.lng_offset)}>
+              
             </Marker>
+
+            {locations.map((l)=>(
+              <Marker color={l.status?'green':'red'} key={l.timestamp} latitude={calc_coordinates(l.coord_lat,l.lat_offset)} longitude={calc_coordinates(l.coord_long,l.lng_offset)}>
+              
+          </Marker>
+            ))}
 
             <Source id="my-data" type="geojson" data={circle}>
           <Layer
